@@ -2,11 +2,16 @@
 import { useState } from 'react';
 import './App.css'
 import './index.css'
+import AnswerSection from './components/AnswerSection';
+import GeoLocationContainer from './components/GeoLocation/GeoLocationContainer'
+
+
 
 
 function App() {
    
     let [currentquestion , setcurrentquestion] = useState(0);
+    let [currentscore,setcurrentscore] =useState(0);
     const quizQuestions = [
       {
         question : "What is the capital of India",
@@ -44,7 +49,10 @@ function App() {
 
 
     function onNextclick(){
-      if(currentquestion==quizQuestions.length-1)return;
+      if(currentquestion==quizQuestions.length-1){
+        alert("The score is" + currentscore);
+        return;
+      }
       setcurrentquestion(currentquestion+1);
 
     }
@@ -52,16 +60,16 @@ function App() {
     function checkAnswer(option){
       if(option.iscorrect){
         console.log("Correct answer");
-        return;
+        setcurrentscore(currentscore+1);
       }
       else{
         console.log("Wrong answer");
-        return;
       }
     }
 
     return (
       <div className='card-wrapper'>
+        <GeoLocationContainer / >
        <div className="app">
          <div className = "question-section">
           <div className="question-count">
@@ -71,9 +79,10 @@ function App() {
               {quizQuestions[currentquestion].question}
           </div>
          </div>
-         <div className="answer-section">
+         {/* <div className="answer-section">
               {quizQuestions[currentquestion].options.map(option => <button onClick={()=>checkAnswer(option)}>{option.answer}</button>)}
-          </div>
+          </div> */}
+          <AnswerSection question={quizQuestions[currentquestion]} onAnswerClick={checkAnswer} />
        </div>
        {/* {button to show next question } */}
        <button onClick={onNextclick}>Next</button>
